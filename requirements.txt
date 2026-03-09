@@ -1,0 +1,6 @@
+fastapi
+uvicorn
+python-multipart
+pdfminer.six
+sqlalchemy
+psycopg2-binary
