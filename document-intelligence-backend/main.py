@@ -1,5 +1,4 @@
 from fastapi import FastAPI, File, UploadFile, HTTPException
-from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pdfminer.high_level import extract_text
 from utils.classifier import classify_document
@@ -13,13 +12,13 @@ import json
 
 app = FastAPI()
 
-from fastapi.middleware.cors import CORSMiddleware
+FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:3000")
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:3000",
-        "https://document-intelligence-ai.vercel.app/"
+        FRONTEND_URL,
     ],
     allow_credentials=True,
     allow_methods=["*"],
@@ -63,12 +62,13 @@ async def upload_pdf(file: UploadFile = File(...)):
 
         extracted_text = extract_text(file_path)
 
-        document_type = classify_document(extracted_text)
-        structured_data = extract_document_data(document_type, extracted_text)
-
         if not extracted_text or not extracted_text.strip():
-            structured_data = {}
             extracted_text = ""
+            document_type = "unknown"
+            structured_data = {}
+        else:
+            document_type = classify_document(extracted_text)
+            structured_data = extract_document_data(document_type, extracted_text)
 
         summary_payload = generate_fallback_summary(
             document_type=document_type,

@@ -37,7 +37,18 @@ export default function Home() {
   const [error, setError] = useState<string>("");
 
   const API_BASE_URL =
-    process.env.NEXT_PUBLIC_API_URL || "https://document-intelligence-backend.onrender.com";
+    process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+
+  useEffect(() => {
+    if (API_BASE_URL.startsWith("postgres")) {
+      setError(
+        "NEXT_PUBLIC_API_URL is incorrectly set. Use the Render backend URL, not the database URL."
+      );
+      return;
+    }
+
+    fetchDocuments();
+  }, []);
 
   const fetchDocuments = async () => {
     try {
@@ -58,10 +69,6 @@ export default function Home() {
     }
   };
 
-  useEffect(() => {
-    fetchDocuments();
-  }, []);
-
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0] || null;
     setSelectedFile(file);
@@ -76,6 +83,13 @@ export default function Home() {
 
     if (selectedFile.type !== "application/pdf") {
       setError("Only PDF files are allowed.");
+      return;
+    }
+
+    if (API_BASE_URL.startsWith("postgres")) {
+      setError(
+        "NEXT_PUBLIC_API_URL is incorrectly set. Use the Render backend URL, not the database URL."
+      );
       return;
     }
 
