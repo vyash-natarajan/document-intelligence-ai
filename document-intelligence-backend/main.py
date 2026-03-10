@@ -19,7 +19,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:3000",
-        "https://your-frontend.vercel.app"
+        "https://document-intelligence-ai.vercel.app/"
     ],
     allow_credentials=True,
     allow_methods=["*"],
