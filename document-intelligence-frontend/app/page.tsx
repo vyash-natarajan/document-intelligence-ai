@@ -36,7 +36,8 @@ export default function Home() {
   const [documents, setDocuments] = useState<DocumentItem[]>([]);
   const [error, setError] = useState<string>("");
 
-  const API_BASE_URL = "http://127.0.0.1:8000";
+  const API_BASE_URL =
+    process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
   const fetchDocuments = async () => {
     try {
@@ -121,7 +122,8 @@ export default function Home() {
             Document Intelligence Platform
           </h1>
           <p className="mt-3 max-w-3xl text-slate-600">
-            Upload PDF documents, classify them, extract structured data, generate AI-ready summaries, and review document history.
+            Upload PDF documents, classify them, extract structured data,
+            generate AI-ready summaries, and review document history.
           </p>
         </div>
 
@@ -197,7 +199,7 @@ export default function Home() {
 
             <div className="mb-5 rounded-xl border border-slate-200 p-4">
               <p className="mb-2 text-sm text-slate-500">Key Points</p>
-              <ul className="list-disc pl-5 text-slate-800 space-y-1">
+              <ul className="list-disc space-y-1 pl-5 text-slate-800">
                 {uploadResult.key_points?.map((point, index) => (
                   <li key={index}>{point}</li>
                 ))}
@@ -205,8 +207,12 @@ export default function Home() {
             </div>
 
             <div className="mb-5 rounded-xl border border-slate-200 p-4">
-              <p className="mb-2 text-sm text-slate-500">Recommended Next Action</p>
-              <p className="text-slate-800">{uploadResult.recommended_next_action}</p>
+              <p className="mb-2 text-sm text-slate-500">
+                Recommended Next Action
+              </p>
+              <p className="text-slate-800">
+                {uploadResult.recommended_next_action}
+              </p>
             </div>
 
             <div className="mb-5 rounded-xl border border-slate-200 p-4">
@@ -217,7 +223,9 @@ export default function Home() {
             </div>
 
             <div className="rounded-xl border border-slate-200 p-4">
-              <p className="mb-2 text-sm text-slate-500">Extracted Text Preview</p>
+              <p className="mb-2 text-sm text-slate-500">
+                Extracted Text Preview
+              </p>
               <div className="max-h-96 overflow-y-auto whitespace-pre-wrap rounded-xl bg-slate-100 p-4 text-sm text-slate-800">
                 {uploadResult.extracted_text}
               </div>
@@ -262,7 +270,7 @@ export default function Home() {
 
                   <div className="mb-3">
                     <p className="mb-1 text-sm text-slate-500">Key Points</p>
-                    <ul className="list-disc pl-5 text-slate-800 space-y-1">
+                    <ul className="list-disc space-y-1 pl-5 text-slate-800">
                       {doc.key_points?.map((point, index) => (
                         <li key={index}>{point}</li>
                       ))}
@@ -270,12 +278,18 @@ export default function Home() {
                   </div>
 
                   <div className="mb-3">
-                    <p className="mb-1 text-sm text-slate-500">Recommended Next Action</p>
-                    <p className="text-slate-800">{doc.recommended_next_action}</p>
+                    <p className="mb-1 text-sm text-slate-500">
+                      Recommended Next Action
+                    </p>
+                    <p className="text-slate-800">
+                      {doc.recommended_next_action}
+                    </p>
                   </div>
 
                   <div>
-                    <p className="mb-1 text-sm text-slate-500">Structured Data</p>
+                    <p className="mb-1 text-sm text-slate-500">
+                      Structured Data
+                    </p>
                     <pre className="max-w-full overflow-x-auto rounded-xl bg-slate-100 p-3 text-xs text-slate-800">
                       {JSON.stringify(doc.structured_data, null, 2)}
                     </pre>
