@@ -37,7 +37,7 @@ export default function Home() {
   const [error, setError] = useState<string>("");
 
   const API_BASE_URL =
-    process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+    process.env.NEXT_PUBLIC_API_URL || "https://document-intelligence-backend.onrender.com";
 
   const fetchDocuments = async () => {
     try {
